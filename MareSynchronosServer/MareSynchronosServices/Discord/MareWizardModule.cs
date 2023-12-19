@@ -58,30 +58,30 @@ public partial class MareWizardModule : InteractionModuleBase
         }
 
         EmbedBuilder eb = new();
-        eb.WithTitle("Welcome to the Mare Synchronos Service Bot for this server");
-        eb.WithDescription("Here is what you can do:" + Environment.NewLine + Environment.NewLine
-            + (!hasAccount ? string.Empty : ("- Check your account status press \"ℹ️ User Info\"" + Environment.NewLine))
-            + (hasAccount ? string.Empty : ("- Register a new Mare Account press \"🌒 Register\"" + Environment.NewLine))
-            + (!hasAccount ? string.Empty : ("- You lost your secret key press \"🏥 Recover\"" + Environment.NewLine))
-            + (hasAccount ? string.Empty : ("- If you have changed your Discord account press \"🔗 Relink\"" + Environment.NewLine))
-            + (!hasAccount ? string.Empty : ("- Create a secondary UIDs press \"2️⃣ Secondary UID\"" + Environment.NewLine))
-            + (!hasAccount ? string.Empty : ("- Set a Vanity UID press \"💅 Vanity IDs\"" + Environment.NewLine))
-            + (!hasAccount ? string.Empty : ("- Delete your primary or secondary accounts with \"⚠️ Delete\""))
+        eb.WithTitle("欢迎使用本服务器的Mare Synchronos服务机器人");
+        eb.WithDescription("你可以做这些事情:" + Environment.NewLine + Environment.NewLine
+            + (!hasAccount ? string.Empty : ("- 检查你的账号状态 按下 \"ℹ️ 用户信息\"" + Environment.NewLine))
+            + (hasAccount ? string.Empty : ("- 注册一个新的Mare账号 按下 \"🌒 注册\"" + Environment.NewLine))
+            + (!hasAccount ? string.Empty : ("- 如果丢失了同步密钥 按下 \"🏥 恢复\"" + Environment.NewLine))
+            + (hasAccount ? string.Empty : ("- 如果你更换了你的Discord账号 按下 \"🔗 重新连接\"" + Environment.NewLine))
+            + (!hasAccount ? string.Empty : ("- 创建一个小号Mare UID 按下 \"2️⃣ 辅助 UID\"" + Environment.NewLine))
+            + (!hasAccount ? string.Empty : ("- 设置个性Mare UID 按下 \"💅 个性 UID\"" + Environment.NewLine))
+            + (!hasAccount ? string.Empty : ("- 删除你的大号或者小号 按下 \"⚠️ 删除\""))
             );
         eb.WithColor(Color.Blue);
         ComponentBuilder cb = new();
         if (!hasAccount)
         {
-            cb.WithButton("Register", "wizard-register", ButtonStyle.Primary, new Emoji("🌒"));
-            cb.WithButton("Relink", "wizard-relink", ButtonStyle.Secondary, new Emoji("🔗"));
+            cb.WithButton("注册", "wizard-register", ButtonStyle.Primary, new Emoji("🌒"));
+            cb.WithButton("重新连接", "wizard-relink", ButtonStyle.Secondary, new Emoji("🔗"));
         }
         else
         {
-            cb.WithButton("User Info", "wizard-userinfo", ButtonStyle.Secondary, new Emoji("ℹ️"));
-            cb.WithButton("Recover", "wizard-recover", ButtonStyle.Secondary, new Emoji("🏥"));
-            cb.WithButton("Secondary UID", "wizard-secondary", ButtonStyle.Secondary, new Emoji("2️⃣"));
-            cb.WithButton("Vanity IDs", "wizard-vanity", ButtonStyle.Secondary, new Emoji("💅"));
-            cb.WithButton("Delete", "wizard-delete", ButtonStyle.Danger, new Emoji("⚠️"));
+            cb.WithButton("用户信息", "wizard-userinfo", ButtonStyle.Secondary, new Emoji("ℹ️"));
+            cb.WithButton("恢复", "wizard-recover", ButtonStyle.Secondary, new Emoji("🏥"));
+            cb.WithButton("辅助 UID", "wizard-secondary", ButtonStyle.Secondary, new Emoji("2️⃣"));
+            cb.WithButton("个性 UID", "wizard-vanity", ButtonStyle.Secondary, new Emoji("💅"));
+            cb.WithButton("删除", "wizard-delete", ButtonStyle.Danger, new Emoji("⚠️"));
         }
         if (init)
         {
@@ -98,28 +98,28 @@ public partial class MareWizardModule : InteractionModuleBase
 
     public class VanityUidModal : IModal
     {
-        public string Title => "Set Vanity UID";
+        public string Title => "设置个性 UID";
 
-        [InputLabel("Set your Vanity UID")]
-        [ModalTextInput("vanity_uid", TextInputStyle.Short, "5-15 characters, underscore, dash", 5, 15)]
+        [InputLabel("输入你想要设置的个性 UID")]
+        [ModalTextInput("vanity_uid", TextInputStyle.Short, "5-15个字符，下划线，短横线", 5, 15)]
         public string DesiredVanityUID { get; set; }
     }
 
     public class VanityGidModal : IModal
     {
-        public string Title => "Set Vanity Syncshell ID";
+        public string Title => "设置个性同步贝ID";
 
-        [InputLabel("Set your Vanity Syncshell ID")]
-        [ModalTextInput("vanity_gid", TextInputStyle.Short, "5-20 characters, underscore, dash", 5, 20)]
+        [InputLabel("输入你想要设置的个性同步贝ID")]
+        [ModalTextInput("vanity_gid", TextInputStyle.Short, "5-20个字符，下划线，短横线", 5, 20)]
         public string DesiredVanityGID { get; set; }
     }
 
     public class ConfirmDeletionModal : IModal
     {
-        public string Title => "Confirm Account Deletion";
+        public string Title => "确认账号删除";
 
-        [InputLabel("Enter \"DELETE\" in all Caps")]
-        [ModalTextInput("confirmation", TextInputStyle.Short, "Enter DELETE")]
+        [InputLabel("输入全大写的 \"DELETE\"")]
+        [ModalTextInput("confirmation", TextInputStyle.Short, "输入 DELETE")]
         public string Delete { get; set; }
     }
 
@@ -178,7 +178,7 @@ public partial class MareWizardModule : InteractionModuleBase
         if (existingAuth != null)
         {
             SelectMenuBuilder sb = new();
-            sb.WithPlaceholder("Select a UID");
+            sb.WithPlaceholder("选择一个UID");
             sb.WithCustomId(customId);
             var existingUids = await mareDb.Auth.Include(u => u.User).Where(u => u.UserUID == existingAuth.User.UID || u.PrimaryUserUID == existingAuth.User.UID)
                 .OrderByDescending(u => u.PrimaryUser == null).ToListAsync().ConfigureAwait(false);

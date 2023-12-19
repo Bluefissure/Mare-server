@@ -261,12 +261,12 @@ internal class DiscordBot : IHostedService
     private async Task GenerateOrUpdateWizardMessage(SocketTextChannel channel, IUserMessage? prevMessage)
     {
         EmbedBuilder eb = new EmbedBuilder();
-        eb.WithTitle("Mare Services Bot Interaction Service");
-        eb.WithDescription("Press \"Start\" to interact with this bot!" + Environment.NewLine + Environment.NewLine
-            + "You can handle all of your Mare account needs in this server through the easy to use interactive bot prompt. Just follow the instructions!");
+        eb.WithTitle("Mare Services机器人交互服务");
+        eb.WithDescription("点击 \"开始\" 按钮来开始与此机器人互动！" + Environment.NewLine + Environment.NewLine
+            + "您可以通过简单易用的交互式机器人，在此服务器上处理您对Mare账户的所有需求。只需按照说明操作即可！");
         eb.WithThumbnailUrl("https://raw.githubusercontent.com/Penumbra-Sync/repo/main/MareSynchronos/images/icon.png");
         var cb = new ComponentBuilder();
-        cb.WithButton("Start", style: ButtonStyle.Primary, customId: "wizard-home:true", emote: Emoji.Parse("➡️"));
+        cb.WithButton("开始", style: ButtonStyle.Primary, customId: "wizard-home:true", emote: Emoji.Parse("➡️"));
         if (prevMessage == null)
         {
             var msg = await channel.SendMessageAsync(embed: eb.Build(), components: cb.Build()).ConfigureAwait(false);

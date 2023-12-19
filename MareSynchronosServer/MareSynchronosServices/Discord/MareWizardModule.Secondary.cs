@@ -19,15 +19,15 @@ public partial class MareWizardModule
         var secondaryUids = await mareDb.Auth.CountAsync(p => p.PrimaryUserUID == primaryUID).ConfigureAwait(false);
         EmbedBuilder eb = new();
         eb.WithColor(Color.Blue);
-        eb.WithTitle("Secondary UID");
-        eb.WithDescription("You can create secondary UIDs here. " + Environment.NewLine + Environment.NewLine
-            + "Secondary UIDs act as completely separate Mare accounts with their own pair list, joined syncshells, UID and so on." + Environment.NewLine
-            + "Use this to create UIDs if you want to use Mare on two separate game instances at once or keep your alts private." + Environment.NewLine + Environment.NewLine
-            + "__Note:__ Creating a Secondary UID is _not_ necessary to use Mare for alts." + Environment.NewLine + Environment.NewLine
-            + $"You currently have {secondaryUids} Secondary UIDs out of a maximum of 25.");
+        eb.WithTitle("辅助 UID");
+        eb.WithDescription("你可以在这里创建辅助 UID" + Environment.NewLine + Environment.NewLine
+            + "辅助 UID拥有完全分离的配对列表，加入的同步贝，显示的UID等等。" + Environment.NewLine
+            + "如果你想双开游戏，或者给小号一个私密的身份，请在此创建辅助 UID。" + Environment.NewLine + Environment.NewLine
+            + "__提示:__ 对于让小号使用Mare，创建辅助 UID _不是_ 必须的。" + Environment.NewLine + Environment.NewLine
+            + $"你目前拥有 {secondaryUids} 个辅助 UID，最多可拥有的数量是25个。");
         ComponentBuilder cb = new();
         AddHome(cb);
-        cb.WithButton("Create Secondary UID", "wizard-secondary-create:" + primaryUID, ButtonStyle.Primary, emote: new Emoji("2️⃣"), disabled: secondaryUids >= 25);
+        cb.WithButton("创建辅助 UID", "wizard-secondary-create:" + primaryUID, ButtonStyle.Primary, emote: new Emoji("2️⃣"), disabled: secondaryUids >= 25);
         await ModifyInteraction(eb, cb).ConfigureAwait(false);
     }
 
@@ -38,7 +38,7 @@ public partial class MareWizardModule
 
         using var mareDb = GetDbContext();
         EmbedBuilder eb = new();
-        eb.WithTitle("Secondary UID created");
+        eb.WithTitle("辅助 UID创建完成");
         eb.WithColor(Color.Green);
         ComponentBuilder cb = new();
         AddHome(cb);
@@ -77,9 +77,9 @@ public partial class MareWizardModule
 
         await db.SaveChangesAsync().ConfigureAwait(false);
 
-        embed.WithDescription("A secondary UID for you was created, use the information below and add the secret key to the Mare setings in the Service Settings tab.");
+        embed.WithDescription("一个辅助 UID创建完成，将以下的信息输入Mare的服务设置页面。");
         embed.AddField("UID", newUser.UID);
-        embed.AddField("Secret Key", computedHash);
+        embed.AddField("同步密钥", computedHash);
     }
 
 }

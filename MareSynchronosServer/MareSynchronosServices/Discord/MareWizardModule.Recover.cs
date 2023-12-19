@@ -17,12 +17,12 @@ public partial class MareWizardModule
         using var mareDb = GetDbContext();
         EmbedBuilder eb = new();
         eb.WithColor(Color.Blue);
-        eb.WithTitle("Recover");
-        eb.WithDescription("In case you have lost your secret key you can recover it here." + Environment.NewLine + Environment.NewLine
-            + "Use the selection below to select the user account you want to recover." + Environment.NewLine + Environment.NewLine
-            + "- 1️⃣ is your primary account/UID" + Environment.NewLine
-            + "- 2️⃣ are all your secondary accounts/UIDs" + Environment.NewLine
-            + "If you are using Vanity UIDs the original UID is displayed in the second line of the account selection.");
+        eb.WithTitle("恢复");
+        eb.WithDescription("如果你丢失了同步密钥，可以在此恢复。" + Environment.NewLine + Environment.NewLine
+            + "用下面的选择框来选取需要恢复的UID。" + Environment.NewLine + Environment.NewLine
+            + "- 1️⃣ 是你的主要账号/UID" + Environment.NewLine
+            + "- 2️⃣ 是你所有的辅助UID" + Environment.NewLine
+            + "如果你在使用个性 UID的话，原始的UID会在账号选项的第二行显示。");
         ComponentBuilder cb = new();
         await AddUserSelection(mareDb, cb, "wizard-recover-select").ConfigureAwait(false);
         AddHome(cb);
@@ -63,12 +63,12 @@ public partial class MareWizardModule
 
         await db.Auth.AddAsync(auth).ConfigureAwait(false);
 
-        embed.WithTitle($"Recovery for {uid} complete");
-        embed.WithDescription("This is your new private secret key. Do not share this private secret key with anyone. **If you lose it, it is irrevocably lost.**"
+        embed.WithTitle($"您的账号 {uid} 恢复成功。");
+        embed.WithDescription("这里是你的同步密钥。不要与任何人分享它 **如果它丢失了，是无法恢复的。**"
                               + Environment.NewLine + Environment.NewLine
                               + $"**{computedHash}**"
                               + Environment.NewLine + Environment.NewLine
-                              + "Enter this key in the Mare Synchronos Service Settings and reconnect to the service.");
+                              + "输入此同步密钥到Mare服务设置中并重新连接服务。");
 
         await db.Auth.AddAsync(auth).ConfigureAwait(false);
         await db.SaveChangesAsync().ConfigureAwait(false);

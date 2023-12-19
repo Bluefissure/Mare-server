@@ -30,9 +30,9 @@ public partial class MareWizardModule
         }
 
         EmbedBuilder eb = new();
-        eb.WithTitle("Vanity IDs");
-        eb.WithDescription("You are able to set your Vanity IDs here." + Environment.NewLine
-            + "Vanity IDs are a way to customize your displayed UID or Syncshell ID to others." + Environment.NewLine + Environment.NewLine
+        eb.WithTitle("个性 UID");
+        eb.WithDescription("你可以在这里设置个性 UID" + Environment.NewLine
+            + "个性 UID可以改变别人在同步贝里显示的你的UID。" + Environment.NewLine + Environment.NewLine
             + sb.ToString());
         eb.WithColor(Color.Blue);
         ComponentBuilder cb = new();
@@ -56,12 +56,12 @@ public partial class MareWizardModule
         var user = db.Users.Single(u => u.UID == uid);
         EmbedBuilder eb = new();
         eb.WithColor(Color.Purple);
-        eb.WithTitle($"Set Vanity UID for {uid}");
-        eb.WithDescription($"You are about to change the Vanity UID for {uid}" + Environment.NewLine + Environment.NewLine
-            + "The current Vanity UID is set to: **" + (user.Alias == null ? "No Vanity UID set" : user.Alias) + "**");
+        eb.WithTitle($"为 {uid} 设置个性 UID");
+        eb.WithDescription($"你即将更改 {uid} 的个性 UID" + Environment.NewLine + Environment.NewLine
+            + "目前设置的个性 UID是: **" + (user.Alias == null ? "没有设置个性 UID" : user.Alias) + "**");
         ComponentBuilder cb = new();
-        cb.WithButton("Cancel", "wizard-vanity", ButtonStyle.Secondary, emote: new Emoji("❌"));
-        cb.WithButton("Set Vanity ID", "wizard-vanity-uid-set:" + uid, ButtonStyle.Primary, new Emoji("💅"));
+        cb.WithButton("取消", "wizard-vanity", ButtonStyle.Secondary, emote: new Emoji("❌"));
+        cb.WithButton("设置个性 UID", "wizard-vanity-uid-set:" + uid, ButtonStyle.Primary, new Emoji("💅"));
 
         await ModifyInteraction(eb, cb).ConfigureAwait(false);
     }
@@ -89,18 +89,18 @@ public partial class MareWizardModule
         if (!rgx.Match(desiredVanityUid).Success)
         {
             eb.WithColor(Color.Red);
-            eb.WithTitle("Invalid Vanity UID");
-            eb.WithDescription("A Vanity UID must be between 5 and 15 characters long and only contain the letters A-Z, numbers 0-9, dashes (-) and underscores (_).");
-            cb.WithButton("Cancel", "wizard-vanity", ButtonStyle.Secondary, emote: new Emoji("❌"));
-            cb.WithButton("Pick Different UID", "wizard-vanity-uid-set:" + uid, ButtonStyle.Primary, new Emoji("💅"));
+            eb.WithTitle("不符合要求的个性 UID");
+            eb.WithDescription("个性 UID必须是5到15位长度，并且只包含字母 A-Z, 数字 0-9, 短横线 (-) 以及下划线 (_)。");
+            cb.WithButton("取消", "wizard-vanity", ButtonStyle.Secondary, emote: new Emoji("❌"));
+            cb.WithButton("选择另一个UID", "wizard-vanity-uid-set:" + uid, ButtonStyle.Primary, new Emoji("💅"));
         }
         else if (!canAddVanityId)
         {
             eb.WithColor(Color.Red);
-            eb.WithTitle("Vanity UID already taken");
-            eb.WithDescription($"The Vanity UID {desiredVanityUid} has already been claimed. Please pick a different one.");
-            cb.WithButton("Cancel", "wizard-vanity", ButtonStyle.Secondary, emote: new Emoji("❌"));
-            cb.WithButton("Pick Different UID", "wizard-vanity-uid-set:" + uid, ButtonStyle.Primary, new Emoji("💅"));
+            eb.WithTitle("个性 UID已被占用");
+            eb.WithDescription($"个性 UID {desiredVanityUid} 已经被占用了。 请选择一个其他的个性 UID。");
+            cb.WithButton("取消", "wizard-vanity", ButtonStyle.Secondary, emote: new Emoji("❌"));
+            cb.WithButton("选择另一个UID", "wizard-vanity-uid-set:" + uid, ButtonStyle.Primary, new Emoji("💅"));
         }
         else
         {
@@ -109,9 +109,9 @@ public partial class MareWizardModule
             db.Update(user);
             await db.SaveChangesAsync().ConfigureAwait(false);
             eb.WithColor(Color.Green);
-            eb.WithTitle("Vanity UID successfully set");
-            eb.WithDescription($"Your Vanity UID for \"{uid}\" was successfully changed to \"{desiredVanityUid}\"." + Environment.NewLine + Environment.NewLine
-                + "For changes to take effect you need to reconnect to the Mare service.");
+            eb.WithTitle("成功设置个性 UID");
+            eb.WithDescription($"您的UID \"{uid}\" 的个性 UID成功设置为 \"{desiredVanityUid}\"。" + Environment.NewLine + Environment.NewLine
+                + "重新连接Mare服务器来使变更生效。");
             AddHome(cb);
         }
 

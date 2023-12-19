@@ -16,11 +16,11 @@ public partial class MareWizardModule
         EmbedBuilder eb = new();
         eb.WithTitle("User Info");
         eb.WithColor(Color.Blue);
-        eb.WithDescription("You can see information about your user account(s) here." + Environment.NewLine
-            + "Use the selection below to select a user account to see info for." + Environment.NewLine + Environment.NewLine
-            + "- 1️⃣ is your primary account/UID" + Environment.NewLine
-            + "- 2️⃣ are all your secondary accounts/UIDs" + Environment.NewLine
-            + "If you are using Vanity UIDs the original UID is displayed in the second line of the account selection.");
+        eb.WithDescription("在这里你能看到你的Mare用户信息。" + Environment.NewLine
+            + "用下面的选择框来选取需要查看信息的UID" + Environment.NewLine + Environment.NewLine
+            + "- 1️⃣ 是你的主要账号/UID" + Environment.NewLine
+            + "- 2️⃣ 是你所有的辅助UID" + Environment.NewLine
+            + "如果你在使用个性 UID的话，原始的UID会在账号选项的第二行显示。");
         ComponentBuilder cb = new();
         await AddUserSelection(mareDb, cb, "wizard-userinfo-select").ConfigureAwait(false);
         AddHome(cb);
@@ -54,28 +54,28 @@ public partial class MareWizardModule
         var groupsJoined = await db.GroupPairs.Where(g => g.GroupUserUID == dbUser.UID).ToListAsync().ConfigureAwait(false);
         var identity = await _connectionMultiplexer.GetDatabase().StringGetAsync("UID:" + dbUser.UID).ConfigureAwait(false);
 
-        eb.WithDescription("This is the user info for your selected UID. You can check other UIDs or go back using the menu below." + Environment.NewLine
-            + "If you want to verify your secret key is valid, go to https://emn178.github.io/online-tools/sha256.html and copy your secret key into there and compare it to the Hashed Secret Key provided below.");
+        eb.WithDescription("这是你选中的UID的信息，你可以在下方菜单检查其他UID的信息，或者返回主菜单。" + Environment.NewLine
+            + "如果你想检查你的同步密钥是否正确, 访问 https://emn178.github.io/online-tools/sha256.html 并将您的同步密钥复制到上方的输入框，然后检查输出的同步密钥哈希值是否与下方提供的一致。");
         if (!string.IsNullOrEmpty(dbUser.Alias))
         {
-            eb.AddField("Vanity UID", dbUser.Alias);
+            eb.AddField("个性 UID", dbUser.Alias);
         }
-        eb.AddField("Last Online (UTC)", dbUser.LastLoggedIn.ToString("U"));
-        eb.AddField("Currently online ", !string.IsNullOrEmpty(identity));
-        eb.AddField("Hashed Secret Key", auth.HashedKey);
-        eb.AddField("Joined Syncshells", groupsJoined.Count);
-        eb.AddField("Owned Syncshells", groups.Count);
+        eb.AddField("上一次在线(UTC)", dbUser.LastLoggedIn.ToString("U"));
+        eb.AddField("目前是否在线", !string.IsNullOrEmpty(identity));
+        eb.AddField("同步密钥哈希值", auth.HashedKey);
+        eb.AddField("加入的同步贝数量", groupsJoined.Count);
+        eb.AddField("拥有的同步贝数量", groups.Count);
         foreach (var group in groups)
         {
             var syncShellUserCount = await db.GroupPairs.CountAsync(g => g.GroupGID == group.GID).ConfigureAwait(false);
             if (!string.IsNullOrEmpty(group.Alias))
             {
-                eb.AddField("Owned Syncshell " + group.GID + " Vanity ID", group.Alias);
+                eb.AddField("拥有的同步贝 " + group.GID + " 个性 UID", group.Alias);
             }
-            eb.AddField("Owned Syncshell " + group.GID + " User Count", syncShellUserCount);
+            eb.AddField("拥有的同步贝 " + group.GID + " 用户数量", syncShellUserCount);
         }
 
-        eb.AddField("Currently online", !string.IsNullOrEmpty(identity));
+        eb.AddField("目前是否在线", !string.IsNullOrEmpty(identity));
     }
 
 }
