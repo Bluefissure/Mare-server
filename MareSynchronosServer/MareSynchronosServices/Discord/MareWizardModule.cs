@@ -57,6 +57,17 @@ public partial class MareWizardModule : InteractionModuleBase
             }
         }
 
+        //为已绑定用户添加"MareCN User"身份组
+        if (hasAccount)
+        {
+            const ulong userRoleId = 1192054279226261535;
+            var user = Context.Guild.GetUserAsync(Context.User.Id).Result;
+            if (user != null && !user.RoleIds.ToList().Contains(userRoleId))
+            {
+                await user.AddRoleAsync(userRoleId);
+            }
+        }
+
         EmbedBuilder eb = new();
         eb.WithTitle("欢迎使用本服务器的 Mare Synchronos 服务机器人");
         eb.WithDescription("你可以做这些事情:" + Environment.NewLine + Environment.NewLine

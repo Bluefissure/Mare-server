@@ -74,8 +74,6 @@ public partial class MareWizardModule
             }
             eb.AddField("拥有的同步贝 " + group.GID + " 用户数量", syncShellUserCount);
         }
-
-        eb.AddField("目前是否在线", !string.IsNullOrEmpty(identity));
     }
 
 }
